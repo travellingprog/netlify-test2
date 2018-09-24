@@ -1,3 +1,7 @@
+/**
+ * This imports all React components for our custom preview templates + their styling, and then
+ * registers those templates into the CMS.
+ */
 import React from 'react'
 
 import '../src/globalStyles.css'

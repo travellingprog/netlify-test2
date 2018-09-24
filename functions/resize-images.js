@@ -1,3 +1,8 @@
+/**
+ * This makes sure all uploaded images files are resized to our desired sizes,
+ * unless the imgix API is being used instead.
+ */
+
 const fs = require('fs')
 const path = require('path')
 const globCb = require('glob')
@@ -16,6 +21,10 @@ const options = {
   imageFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp']
 }
 
+/**
+ * Resize the file buffer to a certain width size (unless this width surpasses
+ * the file buffer) and save as outputFile
+ */
 const saveImage = ({ buffer, size, outputFile }) => {
   return new Promise((resolve, reject) => {
     sharp(buffer)
@@ -31,6 +40,10 @@ const saveImage = ({ buffer, size, outputFile }) => {
   })
 }
 
+/**
+ * For each size desired, check if the given file has a matching resized image.
+ * If not, create and save it.
+ */
 const saveImages = ({ buffer, filename }) => {
   console.log(`🎞  Processing ${filename}`)
   return Promise.all(
@@ -48,6 +61,10 @@ const saveImages = ({ buffer, filename }) => {
   )
 }
 
+/**
+ * Returns a Promise that resolves with an array of objects
+ * that contain the filename and the file buffer.
+ */
 const readFiles = files =>
   Promise.all(
     files.map(async filename => {
@@ -65,6 +82,7 @@ const doesFileExist = async ({ filename }) => {
   }
 }
 
+/** reads all the images uploaded and creates + saves resized versions of them */
 const resizeImages = async () => {
   console.log(`✨  Reading image files in ${options.inputDir}`)
   try {
